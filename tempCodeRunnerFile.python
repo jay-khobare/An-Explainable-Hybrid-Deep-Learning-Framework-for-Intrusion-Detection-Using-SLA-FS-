@@ -1,0 +1,57 @@
+import platform
+import psutil
+import subprocess
+import shutil
+
+print("=" * 60)
+print("        SYSTEM HARDWARE SPECIFICATIONS")
+print("=" * 60)
+
+# Operating System
+print(f"Operating System : {platform.system()} {platform.release()}")
+print(f"OS Version       : {platform.version()}")
+
+# Processor
+print(f"Processor        : {platform.processor()}")
+
+# Machine Type
+print(f"System Type      : {platform.machine()}")
+
+# RAM
+ram = psutil.virtual_memory().total / (1024**3)
+print(f"Installed RAM    : {ram:.2f} GB")
+
+# Storage
+disk = shutil.disk_usage("/")
+total_storage = disk.total / (1024**3)
+print(f"Storage Capacity : {total_storage:.2f} GB")
+
+# Get CPU Name using WMIC (Windows)
+try:
+    cpu = subprocess.check_output(
+        "wmic cpu get name",
+        shell=True
+    ).decode().split("\n")[1].strip()
+
+    print(f"CPU Name         : {cpu}")
+except:
+    pass
+
+# Get System Manufacturer & Model
+try:
+    manufacturer = subprocess.check_output(
+        "wmic computersystem get manufacturer",
+        shell=True
+    ).decode().split("\n")[1].strip()
+
+    model = subprocess.check_output(
+        "wmic computersystem get model",
+        shell=True
+    ).decode().split("\n")[1].strip()
+
+    print(f"Manufacturer     : {manufacturer}")
+    print(f"System Model     : {model}")
+except:
+    pass
+
+print("=" * 60)
